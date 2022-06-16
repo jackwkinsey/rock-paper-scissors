@@ -1,8 +1,51 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import NewGameForm from '../components/newGameForm';
+
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const [games, setGames] = useState({});
+
+  useEffect(() => {
+    if (localStorage.getItem('games')) {
+      setGames(JSON.parse(localStorage.getItem('games')));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(games).length) {
+      localStorage.setItem('games', JSON.stringify(games));
+    }
+  }, [games]);
+
+  const createNewGame = (gameId, gameData) => {
+    setGames({
+      ...games,
+      [gameId]: gameData,
+    });
+  };
+
+  const gameCards = Object.keys(games).map(gameId => {
+    const game = games[gameId];
+    const { playerOne, playerTwo } = game.players;
+    return (
+      <a key={gameId} href={`/games/${gameId}`} className={styles.card}>
+        <div className={styles.cardContainer}>
+          <div>{playerOne.name}</div>
+          <div>vs.</div>
+          <div>{playerTwo.name}</div>
+        </div>
+        <div className={styles.cardContainer}>
+          <div>{playerOne.wins}</div>
+          <div></div>
+          <div>{playerTwo.wins}</div>
+        </div>
+      </a>
+    );
+  });
+
   return (
     <div className={styles.container}>
       <Head>
@@ -16,30 +59,9 @@ export default function Home() {
 
         <p className={styles.description}>Create and play multiple games of Rock, Paper, Scissors.</p>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <NewGameForm submit={createNewGame} />
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a href="https://github.com/vercel/next.js/tree/canary/examples" className={styles.card}>
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
-        </div>
+        <div className={styles.grid}>{gameCards}</div>
       </main>
 
       <footer className={styles.footer}>
