@@ -22,8 +22,6 @@ export default function NewGameForm(props) {
     }
     const newGameId = uniqid();
     const newGame = {
-      date_created: new Date(),
-      round: 1,
       players: {
         playerOne: {
           name: playerOneName.trim(),
