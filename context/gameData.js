@@ -4,10 +4,12 @@ const Context = createContext();
 
 export function GameDataProvider({ children }) {
   const [games, setGames] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (localStorage.getItem('games')) {
       setGames(JSON.parse(localStorage.getItem('games')));
+      setLoading(false);
     }
   }, []);
 
@@ -17,7 +19,7 @@ export function GameDataProvider({ children }) {
     }
   }, [games]);
 
-  return <Context.Provider value={[games, setGames]}>{children}</Context.Provider>;
+  return <Context.Provider value={[games, setGames, loading, setLoading]}>{children}</Context.Provider>;
 }
 export function useGameDataContext() {
   return useContext(Context);
