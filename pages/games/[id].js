@@ -109,8 +109,6 @@ export default function Game() {
     setCurrentPlayer(currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne');
   };
 
-  console.log('loading:', loading);
-  console.log('games[id]:', games[id].players);
   return (
     <div className={styles.main}>
       <h1>Rock, Paper, Scissors</h1>
