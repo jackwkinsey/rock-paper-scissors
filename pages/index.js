@@ -52,8 +52,14 @@ export default function Home() {
 
         <NewGameForm submit={createNewGame} />
 
-        <h2>Ongoing Games</h2>
-        <div className={styles.grid}>{gameCards}</div>
+        {gameCards.length ? (
+          <>
+            <h2>Ongoing Games</h2>
+            <div className={styles.grid}>{gameCards}</div>
+          </>
+        ) : (
+          <></>
+        )}
       </main>
 
       <footer className={styles.footer}>
