@@ -68,9 +68,10 @@
 .grid {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   max-width: 800px;
+  min-width: 200px;
 }
 
 .card {
@@ -112,6 +113,16 @@
 .logo {
   height: 1em;
   margin-left: 0.5rem;
+}
+
+.navFooter {
+  margin-top: 40px;
+}
+
+.navFooter a {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 @media (max-width: 600px) {
