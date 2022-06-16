@@ -7,29 +7,36 @@ export default function NewGameForm(props) {
     playerTwoName: '',
   });
 
+  const resetForm = () => {
+    setNewGameData({
+      playerOneName: '',
+      playerTwoName: '',
+    });
+  };
+
   const handleNewGameClick = () => {
     const { playerOneName, playerTwoName } = newGameData;
+    if (!playerOneName.trim() || !playerTwoName.trim()) {
+      resetForm();
+      return;
+    }
     const newGameId = uniqid();
     const newGame = {
       date_created: new Date(),
       round: 1,
       players: {
         playerOne: {
-          name: playerOneName,
+          name: playerOneName.trim(),
           wins: 0,
         },
         playerTwo: {
-          name: playerTwoName,
+          name: playerTwoName.trim(),
           wins: 0,
         },
       },
     };
 
-    // Reset form
-    setNewGameData({
-      playerOneName: '',
-      playerTwoName: '',
-    });
+    resetForm();
 
     props.submit(newGameId, newGame);
   };
@@ -43,21 +50,21 @@ export default function NewGameForm(props) {
   };
 
   return (
-    <div>
+    <>
       <h2>Create a new game</h2>
       <label>
-        Player One Name
+        Player One Name <br />
         <input type="text" name="playerOneName" value={newGameData.playerOneName} onChange={handleChange} />
       </label>
       <br />
       <label>
-        Player Two Name
+        Player Two Name <br />
         <input type="text" name="playerTwoName" value={newGameData.playerTwoName} onChange={handleChange} />
       </label>
       <br />
       <button onClick={handleNewGameClick} type="button">
         Create New Game
       </button>
-    </div>
+    </>
   );
 }
