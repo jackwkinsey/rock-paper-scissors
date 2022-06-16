@@ -1,24 +1,13 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useGameDataContext } from '../context/gameData';
 import NewGameForm from '../components/newGameForm';
 
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
-  const [games, setGames] = useState({});
-
-  useEffect(() => {
-    if (localStorage.getItem('games')) {
-      setGames(JSON.parse(localStorage.getItem('games')));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(games).length) {
-      localStorage.setItem('games', JSON.stringify(games));
-    }
-  }, [games]);
+  const [games, setGames] = useGameDataContext();
 
   const createNewGame = (gameId, gameData) => {
     setGames({
@@ -31,18 +20,20 @@ export default function Home() {
     const game = games[gameId];
     const { playerOne, playerTwo } = game.players;
     return (
-      <a key={gameId} href={`/games/${gameId}`} className={styles.card}>
-        <div className={styles.cardContainer}>
-          <div>{playerOne.name}</div>
-          <div>vs.</div>
-          <div>{playerTwo.name}</div>
-        </div>
-        <div className={styles.cardContainer}>
-          <div>{playerOne.wins}</div>
-          <div></div>
-          <div>{playerTwo.wins}</div>
-        </div>
-      </a>
+      <Link key={gameId} href={`/games/${gameId}`}>
+        <a className={styles.card}>
+          <div className={styles.cardContainer}>
+            <div>{playerOne.name}</div>
+            <div>vs.</div>
+            <div>{playerTwo.name}</div>
+          </div>
+          <div className={styles.cardContainer}>
+            <div>{playerOne.wins}</div>
+            <div></div>
+            <div>{playerTwo.wins}</div>
+          </div>
+        </a>
+      </Link>
     );
   });
 
@@ -61,6 +52,7 @@ export default function Home() {
 
         <NewGameForm submit={createNewGame} />
 
+        <h2>Ongoing Games</h2>
         <div className={styles.grid}>{gameCards}</div>
       </main>
 
